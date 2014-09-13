@@ -10,6 +10,7 @@ General utility scripts.  These scripts provide general utility functions.
         dirsize                              - sort directories by size
         gurl [url]                           - a curl general download wrapper
         lnk [source] [directory/link]        - a no-think linker
+        pack [file] [file*]                  - archive files, folders...
         rps [program]                        - running program search
         termcolors                           - terminal colors print
         tock                                 - command line clock

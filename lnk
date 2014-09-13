@@ -3,7 +3,7 @@
 
 # Usage display if incorrect number of parameters given
 if [ $# != 2 ]; then
-  echo " ${0##*/} [source] [directory/link] - a no-think linker"
+  echo "${0##*/} [source] [directory/link] - a no-think linker"
   exit 1; fi
 
 # Source absolute path
