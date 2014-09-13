@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+# rm alternate, mv files to trash rather than deleting them.
+
+trashdir=~/.local/share/Trash/files/
+
+[ ! -d "$trashdir" ] && mkdir -p "$trashdir" && echo " Created trash directory"
+
+mv -t "$trashdir" --backup=t --verbose "$@"

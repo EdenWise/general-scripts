@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+# command line clock
+
+while true; do
+  printf "\r$(date "+%T") "
+  sleep 1
+done

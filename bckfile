@@ -1,0 +1,51 @@
+#!/bin/sh
+# Backup files with sequential numbering and optional tag
+
+# Usage display if incorrect number of parameters given
+if [ $# -ne 2 -a $# -ne 3 ]; then
+  echo "${0##*/} [file] [dir] [*tag] - Backup files with sequential numbering, opt. tag"
+  exit 1; fi
+
+# Test first, second parameters if are a file and a directory
+if [ ! -e "$1" ]; then
+  echo "${0##*/}: non-file: "$1""
+  error=1; fi
+if [ ! -d "$2" ]; then
+  echo "${0##*/}: non-dir.: "$2""
+  error=1
+else srcdir="$(echo "$2" | sed 's#/$##' )"; fi
+[ -n "$error" ] && exit 1
+
+# Filename: path, dirname, name, basename (name w/o number, tag, ext.), ext.
+fpth="$(realpath "$1")"
+fdnm="${fpth%/*}"
+fnme="${fpth##*/}"
+fbse="${fnme%.*}"; fbse="${fbse%_[0-9][0-9]*}"
+fext="${fnme##*.}"
+if [ "$fext" = "$fnme" ]; then
+  fext=""
+else
+  fext=".$fext";fi
+
+# Set sequential number (parse out number previous, add to for number next)
+fpre=$(ls -1 "$fdnm"/"$srcdir"/"$fbse"_[0-9][0-9]* 2> /dev/null) # File backups previous
+if [ $? -eq 0 ]; then
+  npre=$(echo "${fpre##*/}" | tail -n 1 | grep -o ^"$fbse"_[0-9][0-9] | grep \
+         -o [0-9][0-9] )
+  nnxt=$(printf "%02u" $((10#$npre + 1)))
+else
+  nnxt=00
+fi
+
+# Define admin. program if write permission is needed
+if [ ! -w "$srcdir" ]; then
+  [ ! hash sudo 2>&- ] && { echo "${0##*/}: program required: sudo"; exit 1; }
+  sudo=sudo; fi
+
+# Assign tag
+[ -n "$3" ] && \
+tag="-$3"   && \
+tag="$(printf "%q" "$tag")"
+
+# Backup file
+$sudo cp -aiv "$fpth" "$srcdir"/"$fbse"_"$nnxt""$tag""$fext"

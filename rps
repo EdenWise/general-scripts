@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+# Running program search
+
+ps aux | grep --color=always -i "$@" | grep -v grep | grep -v "$0"

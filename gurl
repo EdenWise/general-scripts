@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+# A curl general download wrapper
+# curl alias for:
+#   -l : redirect automatically
+#   -O : output filename is remote name
+#   -# : progress bar
+#   -w : (--write-out) print filename
+#   -A : user agent
+#      : resume difficult (wget -c, better): http://tinyurl.com/7umwyl3
+
+for u in "$@"; do
+  # resume try
+  #if [ -e "{u##*/}" ]; then
+    #curl -l -C - -o "${u##*/}" -# -w "%{filename_effective}\n" -A "Mozilla/4.0" "$u"
+  #else
+    curl -l -O -# -w "%{filename_effective}\n" -A "Mozilla/4.0" "$u"
+  #fi
+done

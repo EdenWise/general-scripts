@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+# Background a terminal command
+# Add 'complete -cf bgcmd' to ~/.bashrc for command completion
+
+nohup "$@" &> /dev/null &

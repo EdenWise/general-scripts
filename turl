@@ -1,0 +1,8 @@
+#!/bin/sh
+# Command line tinyurl
+
+url="$@"
+for u in "${url[@]}"; do
+  curl -s http://tinyurl.com/create.php?url="$u" | \
+  grep -o http://tinyurl.com/.*\' | sed "s/'//g" | head -n1
+done
