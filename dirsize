@@ -6,7 +6,7 @@ if [ -z "$1" ]; then
   dir=.
 else
   dir="$1"; fi
-du -b --max-depth 1 "$dir" | sort -n | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e' | sed 's`./` `g'
+du -b --max-depth 1 "$dir" | sort -n | perl -pe 's{([0-9]+)}{sprintf "%.1f%s", $1>=2**30? ($1/2**30, "G"): $1>=2**20? ($1/2**20, "M"): $1>=2**10? ($1/2**10, "K"): ($1, "")}e' | sed 's`./` `g' | column -t
 
 #du -s * | sort -n | cut -f2 | xargs du -sh | sed 's/\(^.*  \)/.*\1/g' | sed 's/^/ /g' | cut -d ' ' -f 1,2
 #du -s * | sort -n | cut -f2 | xargs du -sh | sed 's/\(^.*  \)/.*\1/g' | sed 's/^/ /g' | cut -d ' ' -f 1,2

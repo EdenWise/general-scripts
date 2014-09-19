@@ -3,7 +3,7 @@
 
 # Usage display if no parameters given
 if [[ -z "$@" ]]; then
-  echo "${0##*/} <archive> - extract common file formats"
+  echo "${0##*/} [archive] - general archive extractor"
   exit
 fi
 
