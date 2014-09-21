@@ -1,0 +1,30 @@
+#!/usr/bin/bash
+# Sort words in alphabetic order
+
+# Usage display if no parameters given
+if [ "$#" -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
+  echo "${0##*/} [*option] word1 word2... - sort words in alphabetic order
+  -n - seperate by newlines
+  -q - with single quotes
+  -Q - with single quotes and newlines"
+  exit
+fi
+
+case $1 in
+  -n )  shift
+        echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
+        sort -uVf ;;
+  -q )  shift
+        echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
+        sort -uVf | tr "\n" " " | sed "s/ /' '/g" | sed "s/ '$//g" | \
+        sed "s/^/'/g"
+        echo ;;
+  -Q )  shift
+        echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
+          sort -uVf | tr "\n" " " | sed "s/ /' '/g"  | sed "s/ '$//g" | \
+          sed "s/^/'/g" | tr " " "\n"
+        echo ;;
+  * )   echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
+        sort -uVf | tr "\n" " "
+      echo
+esac
