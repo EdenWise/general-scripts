@@ -12,6 +12,7 @@ General utility scripts.  These scripts provide general utility functions.
         lnk [source] [directory/link]        - a no-think linker
         pack [file] [file*]                  - archive files, folders...
         rps [program]                        - running program search
+        sortwords [*option] word1 word2...   - sort words in alphabetic order
         termcolors                           - terminal colors print
         tock                                 - command line clock
         turl [url]                           - command line tinyurl
