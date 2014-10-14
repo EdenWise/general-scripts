@@ -22,7 +22,7 @@ for a in $@; do
     *.tar.bz2 ) bsdtar xvf  "$a"                ;;
     *.tbz2    ) bsdtar xvf  "$a"                ;;
     *.deb     ) ar vx       "$a"                ;;
-    *.gz      ) bsdrar xvf  "$a"                ;;
+    *.gz      ) bsdtar xvf  "$a"                ;;
     *.tar.gz  ) bsdtar xvf  "$a"                ;;
     *.tgz     ) bsdtar xvf "$a"                 ;;
     *.tar     ) bsdtar xvf  "$a"                ;;
