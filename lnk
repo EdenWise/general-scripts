@@ -32,11 +32,11 @@ else
 # Permission test
 if [ -d "$link" ]; then
   if [ ! -w "$link" ]; then
-    [ ! hash sudo 2>&- ] && { echo "Program required: "sudo""; exit 1; }
+    [ ! hash sudo 2>&- ] && { echo "Requires program: sudo."; exit 1; }
     sudo=sudo; fi
 else [ ! -d "$2" ]
   if [ ! -w $(dirname "${link%/*}") ]; then
-    [ ! hash sudo 2>&- ] && { echo "Program required: "sudo""; exit 1; }
+    [ ! hash sudo 2>&- ] && { echo "Requires program: sudo."; exit 1; }
     sudo=sudo; fi; fi
 
 $sudo ln -sv "$source" "$link" | awk -F ' -> ' '{ print $2 " -> " $1 }' | GREP_COLOR='1;36' grep --color=always " ‘.*$"

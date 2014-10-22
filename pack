@@ -1,23 +1,29 @@
 #!/usr/bin/bash
-# Archive and compress file and folders
+# Archive files, folders...
 
-# Usage display if no parameters given
-if [ $# -eq 0 ]; then
-  echo "${0##*/} [file] [file*] - archive and compress files, folders... "
-  exit; fi
+# Usage display if no parameters given, or help option given.
+if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ]; then
+  echo "${0##*/} <file1> <*dir>... - archive files, folders..."
+  exit 1
+fi
 
-# Selection(s) existance test
-for a in "$@"; do
-  if [ ! -f "$a" ]; then
-    echo "Selection \""$@"\" does not exist."
-    exit; fi; done
+# File existence test.
+for file in "$@"; do
+  [ ! -e "$file" ] && echo "Non-exist: "$file"." && error=y
+done
+[ "$error" ] && exit 1
 
-# Archive name prompt
-while true; do
-  read -p "Enter archive filename (minus extension): " filename
-  if [ -n "$filename" ]; then
-    break; fi; done
+# Archive name, extension, full filename, compression method.
+read -p "Archive name (ommiting ext.) [archive] : " archive_nm
+if [ ! "$archive_nm" ]; then
+  archive_nm=archive
+fi
 
-# Create archive
-tar -c --xz -f "$filename".tar.xz "$@" && \
-echo "Created: "$filename".tar.xz"
+# Archive existence test.
+if [ -f "$archive_nm".tar.xz ]; then
+  echo "Exists: "$archive_nm".tar.xz"
+  exit 1
+fi
+
+bsdtar -cJf "$archive_nm".tar.xz "$@" && \
+  echo "Created: "$archive_nm".tar.xz"
