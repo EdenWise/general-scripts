@@ -1,5 +1,5 @@
 #!/bin/sh
-# Command line tinyurl
+# Command line tinyurl.
 
 url="$@"
 for u in "${url[@]}"; do

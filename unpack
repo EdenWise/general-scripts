@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# General archive extractor
+# General archive extractor.
 
 # Usage display if no parameters given
 if [[ -z "$@" ]]; then

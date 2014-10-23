@@ -1,0 +1,87 @@
+=encoding UTF8
+
+=head1 NAME
+
+genscripts - general utility scripts.
+
+=head1 DESCRIPTION
+
+=over 4
+
+=item B<bckfile>
+
+Backup files with sequential numbering.
+
+=item B<bgcmd>
+
+Open a terminal command in the background.
+
+=item B<cbin>
+
+Copy file or stdin into X.org server clipboard.
+
+=item B<cbout>
+
+Paste X.org server clipboard to file or stdout.
+
+=item B<del>
+
+rm alternate, mv files to trash rather than deleting them.
+
+=item B<dirsize>
+
+Sort directories by size.
+
+=item B<gurl>
+
+A curl general download wrapper.
+
+=item B<lnk>
+
+A no-think linker.
+
+=item B<pack>
+
+Archive files, folders...
+
+=item B<pwr>
+
+Power management tasks.
+
+=item B<rps>
+
+Running package search.
+
+=item B<sortwords>
+
+Sort words in alphabetic order.
+
+=item B<termcolors>
+
+Terminal colors print.
+
+=item B<tock>
+
+Dynamic command line clock.
+
+=item B<topdev>
+
+Print disk usage.
+
+=item B<topmem>
+
+Print top memory users.
+
+=item B<tputcolor>
+
+Print tput color, font type, outputs.
+
+=item B<turl>
+
+Command line tinyurl.
+
+=item B<unpack>
+
+General archive extractor.
+
+=back

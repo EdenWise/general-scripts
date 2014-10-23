@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# command line clock
+# Dynamic command line clock.
 
 while true; do
   printf "\r$(date "+%T") "
