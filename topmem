@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+# Print top memory users.
+
+while read command percent rss; do 
+  if [[ "${command}" != "COMMAND" ]]; then 
+    rss=$( awk "BEGIN { print ${rss}/1024 ; }")
+  fi
+  printf "%-17s%-6s%s\n" "${command}" "${percent}" "${rss} MiB" \
+  | sed 's/COMMAND/PROGRAM/' | sed 's/RSS MiB/#MEM/' 
+done < <(ps -A --sort -rss -o comm,pmem,rss | head -n 10)
+

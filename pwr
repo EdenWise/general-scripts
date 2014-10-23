@@ -1,0 +1,34 @@
+#!/usr/bin/bash
+# Power management tasks
+
+# Usage if not one parameter, or asks for help.
+if [ $# -ne 1 -o "$1" = -h -o "$1" = --help ]; then
+  echo "${0##*/} [--poweroff,-p] [--restart,-r] [--suspend,-s] [--hibernate,-h] [--blank,-b]"
+  exit 1
+fi
+
+# Root access test/regular user admin. program.
+if (( $EUID )); then
+  hash sudo 2>&- || { echo "Requires program: sudo." ; exit 1 ; }
+  sudo=sudo
+fi
+
+case $1 in
+  --poweroff  | -p )
+    echo "Shutting Down..."
+    $sudo systemctl poweroff                                                  ;;
+  --restart   | -r )
+    echo "Restarting System..."
+    $sudo systemctl reboot                                                    ;;
+  --suspend   | -s )
+    echo "Suspending to RAM..."
+    $sudo systemctl suspend                                                   ;;
+  --hibernate | -h )
+    echo "Hibernating to Disk..."
+    $sudo systemctl hibernate                                                 ;;
+  --blankmon  | -b )
+    echo "Sleeping Monitor..."
+    sleep 1 && xset s activate                                                ;;
+  * )
+    echo "Option invalid."
+esac

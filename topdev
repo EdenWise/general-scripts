@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+# Print disk usage
+
+# Key word exclusions (seperated by space)
+exclude=(none)
+
+df -h | grep -e '^Filesystem' -e '^/dev'  | \
+grep -vf <(printf "%s\n" "${exclude[@]}") | \
+awk '{ print $1" "$2" "$3" "$4" "$5" "$6 }' | column -t -o "  "
