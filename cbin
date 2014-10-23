@@ -1,0 +1,37 @@
+#!/usr/bin/bash
+# Copy file or stdin into X.org server clipboard.
+
+# Required program test.
+hash xclip 2>&- || { echo "Requires program: xclip."; error=y; }
+
+# Regular user test.
+if ! (( $EUID )); then
+  echo "Requires regular user permissions."
+  error=y
+fi
+[ "$error" ] && exit 1
+
+# Usage display with help option.
+help_prnt () {
+  echo "${0##*/} <*file> - copy a file or stdin to X.org server clipboard."
+}
+
+if [ "$1" = -h -o "$1" = --help ]; then
+  help_prnt
+  exit 1
+fi
+
+# If stdin, copy to clipboard.
+if ! [ -t 0 ]; then
+  echo -n "$(< /dev/stdin)" | xclip -selection clipboard
+  echo "Clipboard copied stdin."
+# If file, copy to clipboard.
+else
+  if [ -f "$@" ]; then
+    [ $# -eq 0 ] && help_prnt && exit 1
+    xclip -in -selection clipboard "$1"
+    echo "Cliboard copied file: "$1"."
+  else
+    echo "Non-existant: "$1"."
+  fi
+fi

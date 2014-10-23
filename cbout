@@ -1,0 +1,43 @@
+#!/usr/bin/bash
+# Paste X.org server clipboard to file or stdout.
+
+# Required program test.
+hash xclip 2>&- || { echo "Requires program: xclip."; error=y; }
+
+# Regular user test.
+if ! (( $EUID )); then
+  echo "Requires regular user permissions." 
+  error=y
+fi
+[ "$error" ] && exit 1
+
+# Usage display with >1 parameter or help option.
+if [ $# -gt 1 -o "$1" = -h -o "$1" = --help ]; then
+  echo "${0##*/} <*file> - paste X.org server clipboard to file or stdout."
+  exit 1
+fi
+
+# If parameter, paste to file.
+if [ $1 ]; then
+  if [ -f "$1" ]; then
+    read -p "File existant: "$1"; (e)xit, (a)ppend, (o)verwrite: " eao
+    while true; do
+      case $eao in
+        [Ee] ) exit 1 ;;
+        [a]  ) xclip -out -selection clipboard >> "$1"
+               echo "Clipboard appended file: "$1"."
+               break 2;; 
+        [o]  ) xclip -out -selection clipboard >| "$1"
+               echo "Clipboard overwrote file: "$1"."
+               break 2;;
+        *    ) echo "Answer: (e)xit, (a)ppend, (o)verwrite."
+      esac
+    done
+  else
+    xclip -out -selection clipboard >| "$1"
+    echo "Clipboard wrote file: "$1"."
+  fi
+else
+# If no parameter, paste to stdout.
+  xclip -out -selection clipboard
+fi  
