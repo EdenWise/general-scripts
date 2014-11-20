@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+# Find files larger than 100M on the hard disk
+
+# Use immediate location unless otherwise specified
+if [[ -z "$@" ]]; then
+  loc=.
+else
+  [ ! -d "$@" ] && echo " Directory \""$@"\" doesn't exist" && exit
+  loc="$@"
+fi
+
+find "$loc" -type f -size +100000k -exec ls -Ash --color=always "{}" \;
