@@ -1,15 +1,15 @@
 #!/usr/bin/bash
-# Power management tasks
+# Power management tasks.
 
-# Usage if not one parameter, or asks for help.
-if [ $# -ne 1 -o "$1" = -h -o "$1" = --help ]; then
-  echo "${0##*/} [--poweroff,-p] [--restart,-r] [--suspend,-s] [--hibernate,-h] [--blank,-b]"
-  exit 1
-fi
+# Usage.
+usage () {
+    echo -n "${0##*/} [--poweroff,-p] [--restart,-r] [--suspend,-s] "
+    echo    "[--hibernate,-h] [--blank,-b]"
+}; [ $# -ne 1 -o "$1" = --help ] && { usage; exit; }
 
-# Root access test/regular user admin. program.
+# Root test; admin. program set.
 if (( $EUID )); then
-  hash sudo 2>&- || { echo "Requires program: sudo." ; exit 1 ; }
+  hash sudo 2>&- || { echo "Requires program: sudo."; exit 1; }
   sudo=sudo
 fi
 
@@ -17,7 +17,7 @@ case $1 in
   --poweroff  | -p )
     echo "Shutting Down..."
     $sudo systemctl poweroff                                                  ;;
-  --restart   | -r )
+  --reboot    | -r )
     echo "Restarting System..."
     $sudo systemctl reboot                                                    ;;
   --suspend   | -s )
@@ -30,5 +30,5 @@ case $1 in
     echo "Sleeping Monitor..."
     sleep 1 && xset s activate                                                ;;
   * )
-    echo "Option invalid."
+    usage ; exit 1
 esac
