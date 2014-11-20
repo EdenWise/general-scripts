@@ -36,6 +36,10 @@ Sort directories by size.
 
 A curl general download wrapper.
 
+=item B<largefiles>
+
+Find files larger than 100M on the hard disk.
+
 =item B<lnk>
 
 A no-think linker.

@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Find files larger than 100M on the hard disk
+# Find files larger than 100M on the hard disk.
 
 # Use immediate location unless otherwise specified
 if [[ -z "$@" ]]; then
