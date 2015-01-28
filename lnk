@@ -39,4 +39,4 @@ else [ ! -d "$2" ]
     [ ! hash sudo 2>&- ] && { echo "Requires program: sudo."; exit 1; }
     sudo=sudo; fi; fi
 
-$sudo ln -sv "$source" "$link" | awk -F ' -> ' '{ print $2 " -> " $1 }' | GREP_COLOR='1;36' grep --color=always " ‘.*$"
+$sudo ln -svi "$source" "$link" | awk -F ' -> ' '{ print $2 " -> " $1 }' | GREP_COLOR='1;36' grep --color=always " ‘.*$"
