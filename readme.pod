@@ -64,9 +64,9 @@ Power management tasks.
 
 Running package search.
 
-=item B<sortwords>
+=item B<screenshot>
 
-Sort words in alphabetic order.
+Take a screenshot of desktop or area on desktop.
 
 =item B<termcolors>
 
@@ -87,5 +87,9 @@ Command line tinyurl.
 =item B<unpack>
 
 General archive extractor.
+
+=item B<wordsort>
+
+Sort words in alphabetic order.
 
 =back

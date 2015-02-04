@@ -1,0 +1,15 @@
+#!/usr/bin/bash
+# Take a screenshot of the desktop.
+
+outputdir="$HOME/Desktop" 
+
+# Usage
+if [ "$1" = -h -o "$1" = --help ] || [ -z "$1" ]; then
+  echo "${0##*/} <name>.png — take a screenshot of the desktop or area of the desktop"
+  exit 1
+fi
+
+# Take screenshot
+sleep 1 && import -quality 100 "$outputdir"/"$1".png && \
+  echo "Screenshot saved as "$outputdir"/"$1".png"
+
