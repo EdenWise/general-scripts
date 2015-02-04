@@ -28,6 +28,10 @@ Paste X.org server clipboard to file or stdout.
 
 rm alternate, mv files to trash rather than deleting them.
 
+=item B<devtop>
+
+Print disk usage.
+
 =item B<dirsize>
 
 Sort directories by size.
@@ -43,6 +47,10 @@ Find files larger than 100M on the hard disk.
 =item B<lnk>
 
 A no-think linker.
+
+=item B<memtop>
+
+Print top memory users.
 
 =item B<pack>
 
@@ -67,14 +75,6 @@ Terminal colors print.
 =item B<tock>
 
 Dynamic command line clock.
-
-=item B<topdev>
-
-Print disk usage.
-
-=item B<topmem>
-
-Print top memory users.
 
 =item B<tputcolor>
 
