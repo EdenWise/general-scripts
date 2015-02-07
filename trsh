@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+# Trash files rather than remove/delete them (alternate to rm).
+
+trashdir=~/.local/share/Trash/files/
+[ ! -d "$trashdir" ] && { mkdir -p "$trashdir" && \
+  echo "Trash directory created" ; }
+
+mv --backup=existing --verbose --target-directory "$trashdir" $@
