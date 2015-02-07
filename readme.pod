@@ -24,10 +24,6 @@ Copy file or stdin into X.org server clipboard.
 
 Paste X.org server clipboard to file or stdout.
 
-=item B<del>
-
-rm alternate, mv files to trash rather than deleting them.
-
 =item B<devtop>
 
 Print disk usage.
@@ -79,6 +75,10 @@ Dynamic command line clock.
 =item B<tputcolor>
 
 Print tput color, font type, outputs.
+
+=item B<trsh>
+
+Trash files rather than remove/delete them (alternate to rm).
 
 =item B<turl>
 
