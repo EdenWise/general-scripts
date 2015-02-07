@@ -1,8 +1,20 @@
 #!/usr/bin/bash
-# Trash files rather than remove/delete them (alternate to rm).
+# Files move to the trash rather than remove-delete them (rm alternate).
+
+# Usage
+[ "$1" = -h -o "$1" = --help ] || [ -z "$@" ] && \
+  { echo "${0##*/} — Files move to the trash rather than remove-delete them (rm alternate)." ; exit 1 ; }
+
+# File existence test
+for f in "$@"; do
+  [ ! -e "$f" ] && { echo "Non-existent file: "$f"" ; nonexist=true ; }
+done
+[ "$nonexist" ] && exit 1
 
 trashdir=~/.local/share/Trash/files/
 [ ! -d "$trashdir" ] && { mkdir -p "$trashdir" && \
   echo "Trash directory created" ; }
 
-mv --backup=existing --verbose --target-directory "$trashdir" $@
+for f in "$@" ; do
+  mv --backup=existing --verbose --target-directory "$trashdir" "$f"
+done
