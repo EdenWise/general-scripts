@@ -64,17 +64,13 @@ Running package search.
 
 Take a screenshot of desktop or area on desktop.
 
-=item B<termcolors>
-
-Terminal colors print.
-
 =item B<tock>
 
 Dynamic command line clock.
 
-=item B<tputcolor>
+=item B<tputcolors>
 
-Print tput color, font type, outputs.
+tput color values print.
 
 =item B<trsh>
 
@@ -91,5 +87,9 @@ General archive extractor.
 =item B<wordsort>
 
 Sort words in alphabetic order.
+
+=item B<xtermcolors>
+
+Terminal colors print.
 
 =back
