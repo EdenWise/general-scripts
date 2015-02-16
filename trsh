@@ -1,9 +1,9 @@
 #!/usr/bin/bash
-# Files move to the trash rather than remove-delete them (rm alternate).
+# Trash files rather than remove/delete them (rm alternate)
 
 # Usage
-[ "$1" = -h -o "$1" = --help ] || [ -z "$@" ] && \
-  { echo "${0##*/} — Files move to the trash rather than remove-delete them (rm alternate)." ; exit 1 ; }
+[ "$1" = -h -o "$1" = --help ] || [[ -z "$@" ]] && \
+  { echo "${0##*/} — trash files rather than remove/delete them (rm alternate)" ; exit 1 ; }
 
 # File existence test
 for f in "$@"; do
