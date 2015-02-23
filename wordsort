@@ -1,30 +1,16 @@
 #!/usr/bin/bash
-# Sort words in alphabetic order
+# Words sort in alphabetical order
 
-# Usage display if no parameters given
-if [ "$#" -eq 0 -o "$1" = "-h" -o "$1" = "--help" ]; then
-  echo "${0##*/} [*option] word1 word2... - sort words in alphabetic order
-  -n - seperate by newlines
-  -q - with single quotes
-  -Q - with single quotes and newlines"
+# Usage
+if [ $# -eq 0 -a -t 0 ] || [ "$1" = -h -o "$1" = --help ] ; then
+  echo "<*stdin> ${0##*/} <*file> <*word1 word2…> — words sort in alphabetical order"
   exit
 fi
 
-case $1 in
-  -n )  shift
-        echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
-        sort -uVf ;;
-  -q )  shift
-        echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
-        sort -uVf | tr "\n" " " | sed "s/ /' '/g" | sed "s/ '$//g" | \
-        sed "s/^/'/g"
-        echo ;;
-  -Q )  shift
-        echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
-          sort -uVf | tr "\n" " " | sed "s/ /' '/g"  | sed "s/ '$//g" | \
-          sed "s/^/'/g" | tr " " "\n"
-        echo ;;
-  * )   echo "$@" | sed "s/'//g" | sed 's/"//g' | tr " " "\n" | uniq | \
-        sort -uVf | tr "\n" " "
-      echo
-esac
+if   [ ! -t 0 ] ; then
+  echo "$(< /dev/stdin)" | tr " " "\n" | sort -uVf | tr "\n" " "
+elif [ -f "$1" ]; then
+  cat "$1"               | tr " " "\n" | sort -uVf | tr "\n" " "
+else
+  echo "$@"              | tr " " "\n" | sort -uVf | tr "\n" " "
+fi
