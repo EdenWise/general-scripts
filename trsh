@@ -7,7 +7,8 @@
 
 # File existence test
 for f in "$@"; do
-  [ ! -e "$f" ] && { echo "Non-existent file: "$f"" ; nonexist=true ; }
+  [ ! -e "$f" ] && [ ! -L "$f" ] && \
+    { echo "Non-existent file: "$f"" ; nonexist=true ; }
 done
 [ "$nonexist" ] && exit 1
 
