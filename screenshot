@@ -1,13 +1,23 @@
 #!/usr/bin/bash
 # Take a screenshot of the desktop.
 
-# Usage
-if [ "$1" = -h -o "$1" = --help ] || [ -z "$1" ]; then
-  echo "${0##*/} <name>.png — take a screenshot of the desktop or area of the desktop"
-  exit 1
-fi
+help_prnt () { echo "${0##*/} <name.{jpg,png}> — take a screenshot of the desktop or area thereof" ; }
 
-# Take screenshot
+# Usage
+[ "$1" = -h -o "$1" = --help ] || [ $# -ne 1 ] && { help_prnt ; exit 1 ; }
+if [ -f "$1" ]; then
+  read -p "File existent. Overwrite? (y/n): " file_exist
+  while true; do
+    case $file_exist in
+      [Yy]  ) break 2 ;;
+      [Nn]  ) exit 1  ;;
+      *     ) echo "Answer (y)es or (n)o."
+    esac
+  done
+fi
+[ -e "$1" -a ! -f "$1" ] && { echo "Existent name" ; exit 1 ; }
+[ "${1##*.}" = jpg -o "${1##*.}" = png ] || { help_prnt ; exit 1 ; }
+
 sleep 1 && import -quality 100 "$1".png && \
   echo "Screenshot saved as "$1".png"
 
