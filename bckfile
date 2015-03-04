@@ -1,42 +1,47 @@
 #!/usr/bin/bash
-# Backup files with sequential numbering.
+# File backup with sequential numbering
 
-# Usage.
+# Usage
 if [ $# -gt 2 -o $# -lt 1 -o "$1" = "-h" -o "$1" = "--help" ]; then
-  echo "${0##*/} [file] [*dir] - backup files with sequential numbering."
+  echo "${0##*/} <file> <*dir> — file backup with sequential numbering"
   exit 1; fi
 
-# Existence tests.
+# File existent test
 if [ ! -e "$1" ]; then
-  echo "non-file: "$1""; exit 1; fi
-if [ ! "$2" ]; then
+  echo "non-file: "$1""
+  exit 1
+fi
+
+# Directory existent test
+if   [ ! "$2" ]; then
   srcdir=.
 elif [ -d "$2" ]; then
   srcdir="$2"
 else
-  echo "non-dir: "$2""
-  exit 1; fi
+  echo "non-dir.: "$2""
+  exit 1
+fi
 srcdir=$(echo "$srcdir" | sed 's#/$##') # rm trailing slash
 
-# File parsing: filebasename, dirname, filename w/o ext. and num., filename ext.
-fnme=$(basename "$1")
-fnwo=${fnme%.*}
-fnwo=${fnwo%_[0-9][0-9]*}
+# File: basename, noblename (minus ext. and num.), extension
+fnme=${1##*/}
+fnbl=${fnme%.*} ; fnbl=${fnbl%_[0-9][0-9]*}
 fext=${fnme##*.}
 if [ "$fext" = "$fnme" ]; then
   fext=""
 else
-  fext=".$fext";fi
+  fext=".$fext"
+fi
 
-# Set sequential number.
-fpre=$(ls -1 "$srcdir"/"$fnwo"_[0-9][0-9]* 2> /dev/null) # previous bcks
+# Sequential number determine
+fpre=("$srcdir"/"$fnbl"_[0-9][0-9]*)
 if [ "$fpre" ]; then
-  # number previous
-  npre=$(echo ${fpre##*/} | tail -n 1 | grep -o ^"$fnwo"_[0-9][0-9] | \
-    grep -o [0-9][0-9]$)
+  npre="${#fpre[@]}"     # total elements
+  npre=$(( $npre - 1 ))  # last element number
+  npre="${fpre[$npre]}"  # last element print
+  npre="$(echo "$npre" | grep -o _[0-9][0-9] | grep -o [0-9][0-9]$)"
   nnxt=$(printf "%02u" $((10#$npre + 1)))
 else
   nnxt=00; fi
 
-# Backup file.
-cp -aiv "$1" "$srcdir"/"$fnwo"_"$nnxt""$fext"
+cp -aiv "$1" "$srcdir"/"$fnbl"_"$nnxt""$fext"
