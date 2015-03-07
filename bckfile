@@ -2,13 +2,14 @@
 # File backup with sequential numbering
 
 # Usage
-if [ $# -gt 2 -o $# -lt 1 -o "$1" = "-h" -o "$1" = "--help" ]; then
+if [ $# -gt 2 -o $# -lt 1 -o "$1" = "-h" -o "$1" = "--help" ] ; then
   echo "${0##*/} <file> <*dir> — file backup with sequential numbering"
-  exit 1; fi
+  exit 1
+fi
 
 # File existent test
 if [ ! -e "$1" ]; then
-  echo "non-file: "$1""
+  echo "Non-file: "$1""
   exit 1
 fi
 
@@ -18,30 +19,33 @@ if   [ ! "$2" ]; then
 elif [ -d "$2" ]; then
   srcdir="$2"
 else
-  echo "non-dir.: "$2""
+  echo "Non-dir.: "$2""
   exit 1
 fi
 srcdir=$(echo "$srcdir" | sed 's#/$##') # rm trailing slash
 
 # File: basename, noblename (minus ext. and num.), extension
-fnme=${1##*/}
-fnbl=${fnme%.*} ; fnbl=${fnbl%_[0-9][0-9]*}
-fext=${fnme##*.}
-if [ "$fext" = "$fnme" ]; then
+fbnm=${1##*/}
+fnbl=${fbnm%.*} ; fnbl=${fnbl%_[0-9][0-9]*}
+fext=${fbnm##*.}
+if [ "$fext" = "$fbnm" ]; then
   fext=""
 else
   fext=".$fext"
 fi
 
-# Sequential number determine
-fpre=("$srcdir"/"$fnbl"_[0-9][0-9]*)
-if [ "$fpre" ]; then
-  npre="${#fpre[@]}"     # total elements
-  npre=$(( $npre - 1 ))  # last element number
-  npre="${fpre[$npre]}"  # last element print
-  npre="$(echo "$npre" | grep -o _[0-9][0-9] | grep -o [0-9][0-9]$)"
-  nnxt=$(printf "%02u" $((10#$npre + 1)))
+# File number determine from previous file
+shopt -s nullglob
+pnms=("$srcdir"/"$fnbl"_[0-9][0-9]*)
+if [ "$pnms" ]; then
+  # Previous file: name, basename, extension-less, number
+  pnme="${pnms[@]: -1}"
+  pbnm="${pnme##*/}"
+  pexl="${pbnm%.*}"
+  pnum="${pexl: -2}"
+  fnum=$(printf "%02u" $((10#$pnum + 1)))
 else
-  nnxt=00; fi
+  fnum=00
+fi
 
-cp -aiv "$1" "$srcdir"/"$fnbl"_"$nnxt""$fext"
+cp -aiv "$1" "$srcdir"/"$fnbl"_"$fnum""$fext"
