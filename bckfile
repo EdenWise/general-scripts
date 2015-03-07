@@ -39,7 +39,7 @@ shopt -s nullglob
 pnms=("$srcdir"/"$fnbl"_[0-9][0-9]*)
 if [ "$pnms" ]; then
   # Previous file: name, basename, extension-less, number
-  pnme="${pnms[@]: -1}"
+  pnme="${pnms[-1]}"
   pbnm="${pnme##*/}"
   pexl="${pbnm%.*}"
   pnum="${pexl: -2}"
