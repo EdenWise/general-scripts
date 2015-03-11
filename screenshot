@@ -18,6 +18,6 @@ fi
 [ -e "$1" -a ! -f "$1" ] && { echo "Existent name" ; exit 1 ; }
 [ "${1##*.}" = jpg -o "${1##*.}" = png ] || { help_prnt ; exit 1 ; }
 
-sleep 1 && import -quality 100 "$1".png && \
-  echo "Screenshot saved as "$1".png"
+sleep 1 && import -quality 100 "$1" && \
+  echo "Screenshot saved as "$1""
 
