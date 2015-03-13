@@ -3,7 +3,7 @@
 
 # Usage
 if [ $# != 2 -o "$1" = -h -o "$1" = --help ] ; then
-  echo "${0##*/} <source> <directory/linkname> — a generic linker"
+  echo "${0##*/} <source> <directory,linkname> — a generic linker"
   exit 1
 fi
 
@@ -12,13 +12,22 @@ if [ ! -e "$1" ]; then
   echo "Nonexist: "$1""
   exit 1
 else
-  source="$(realpath "$1")"
+  if [ -d "$1" ] ; then
+     cd "$1"
+     srcname="$(pwd)"
+  else
+     dirname="${1%/*}" ; [ "$1" = "$dirname" ] && dirname="."
+     bsename="${1##*/}"
+     cd "$dirname"
+     srcname="$(pwd)"/"$bsename" 
+  fi
 fi
 
 # Directory absolute path resolution
 if [ -e "$2" ] ; then
    if [ -d "$2" ] ; then
-      link="$(realpath "$2")"
+      cd "$2"
+      lnkname="$(pwd)"
    else
       echo "Existent or non-dir.: "$2""
       exit 1
@@ -26,17 +35,10 @@ if [ -e "$2" ] ; then
 # Linkname absolute path resolution
 else
    dirname="${2%/*}" ; [ "$2" = "$dirname" ] && dirname="."
-   lnkname="${2##*/}"
+   bsename="${2##*/}"
    [ ! -d "$dirname" ] && { echo "Non-dir.: "$2"" ; exit 1 ; }
-   link=""$(realpath "$dirname")"/"$lnkname""
+   cd "$dirname"
+   lnkname="$(pwd)"/"$bsename"
 fi
 
-# Permission test
-#if [ ! -w "$dirname" ] && hash sudo 2>&- ; then
-#   sudo=sudo
-#else
-#   echo "Non-write-access, sudo not installed."
-#   exit 1
-#fi
-
-ln -svi "$source" "$link" | awk -F ' -> ' '{ print $2 " -> " $1 }' |      GREP_COLOR='1;36' grep --color=always " ‘.*$"
+ln -svi "$srcname" "$lnkname" | awk -F ' -> ' '{ print $2 " -> " $1 }' |      GREP_COLOR='1;36' grep --color=always " ‘.*$"
