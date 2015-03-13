@@ -20,7 +20,7 @@ if [ -e "$2" ] ; then
    if [ -d "$2" ] ; then
       link="$(realpath "$2")"
    else
-      echo "Non-dir. or existent: "$2""
+      echo "Existent or non-dir.: "$2""
    fi
 # Linkname absolute path resolution
 else
