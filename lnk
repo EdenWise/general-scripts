@@ -1,42 +1,41 @@
 #!/usr/bin/bash
-# A no-think linker
+# A generic linker
 
-# Usage display if incorrect number of parameters given
-if [ $# != 2 ]; then
-  echo "${0##*/} [source] [directory/link] - a no-think linker"
-  exit 1; fi
+# Usage
+if [ $# != 2 -o "$1" = -h -o "$1" = --help ] ; then
+  echo "${0##*/} <source> <directory/linkname> — a generic linker"
+  exit 1
+fi
 
-# Source absolute path
+# Source absolute path resolution
 if [ ! -e "$1" ]; then
-  echo "Non-exist: "$1""
+  echo "Nonexist: "$1""
   exit 1
 else
-  source="$(realpath "$1")"; fi
+  source="$(realpath "$1")"
+fi
 
-# Linkname absolute path
-if [ -e "$2" ]; then
-  # existent directory
-  [ -d "$2" ] && link="$(realpath "$2")"
-  # existent non-directory
-  [ ! -d "$2" ] && { echo "Exists: "$2""; exit 1; }
+# Directory absolute path resolution
+if [ -e "$2" ] ; then
+   if [ -d "$2" ] ; then
+      link="$(realpath "$2")"
+   else
+      echo "Non-dir. or existent: "$2""
+   fi
+# Linkname absolute path resolution
 else
-  # non-existent directory
-  if [[ "$2" == */ ]]; then { echo "Non-exist: "$2""; exit 1; }
-  # linkname only
-  elif [[ "$2" != */* ]]; then link="$(realpath .)/"$2""
-  # linkname and parent directory
-  elif [ -d "${2%/*}" ]; then link="$(realpath "${2%/*}")/"${2##*/}""
-  # non-existent parent directory
-  elif [ ! -d "${2%/*}" ]; then echo "Non-exist: "${2%/*}""; fi; fi
+   dirname="${2%/*}" ; [ "$2" = "$dirname" ] && dirname="."
+   lnkname="${2##*/}"
+   [ ! -d "$dirname" ] && { echo "Non-dir.: "$2"" ; exit 1 ; }
+   link=""$(realpath "$dirname")"/"$lnkname""
+fi
 
 # Permission test
-if [ -d "$link" ]; then
-  if [ ! -w "$link" ]; then
-    [ ! hash sudo 2>&- ] && { echo "Requires program: sudo."; exit 1; }
-    sudo=sudo; fi
-else [ ! -d "$2" ]
-  if [ ! -w $(dirname "${link%/*}") ]; then
-    [ ! hash sudo 2>&- ] && { echo "Requires program: sudo."; exit 1; }
-    sudo=sudo; fi; fi
+#if [ ! -w "$dirname" ] && hash sudo 2>&- ; then
+#   sudo=sudo
+#else
+#   echo "Non-write-access, sudo not installed."
+#   exit 1
+#fi
 
-$sudo ln -svi "$source" "$link" | awk -F ' -> ' '{ print $2 " -> " $1 }' | GREP_COLOR='1;36' grep --color=always " ‘.*$"
+ln -svi "$source" "$link" | awk -F ' -> ' '{ print $2 " -> " $1 }' |      GREP_COLOR='1;36' grep --color=always " ‘.*$"
