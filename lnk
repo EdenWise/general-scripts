@@ -15,11 +15,13 @@ else
   if [ -d "$1" ] ; then
      cd "$1"
      srcname="$(pwd)"
+     cd "$OLDPWD"
   else
      dirname="${1%/*}" ; [ "$1" = "$dirname" ] && dirname="."
      bsename="${1##*/}"
      cd "$dirname"
      srcname="$(pwd)"/"$bsename" 
+     cd "$OLDPWD"
   fi
 fi
 
@@ -28,6 +30,7 @@ if [ -e "$2" ] ; then
    if [ -d "$2" ] ; then
       cd "$2"
       lnkname="$(pwd)"
+      cd "$OLDPWD"
    else
       echo "Existent or non-dir.: "$2""
       exit 1
@@ -36,9 +39,10 @@ if [ -e "$2" ] ; then
 else
    dirname="${2%/*}" ; [ "$2" = "$dirname" ] && dirname="."
    bsename="${2##*/}"
-   [ ! -d "$dirname" ] && { echo "Non-dir.: "$2"" ; exit 1 ; }
+   [ ! -d "$dirname" ] && { echo "Non-dir.: "$dirname"" ; exit 1 ; }
    cd "$dirname"
    lnkname="$(pwd)"/"$bsename"
+   cd "$OLDPWD"
 fi
 
 ln -svi "$srcname" "$lnkname" | awk -F ' -> ' '{ print $2 " -> " $1 }' |      GREP_COLOR='1;36' grep --color=always " ‘.*$"
