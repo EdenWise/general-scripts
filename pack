@@ -1,29 +1,29 @@
 #!/usr/bin/bash
 # Archive files, folders...
 
-# Usage display if no parameters given, or help option given.
+# Usage display with help option or when parameter is not given
 if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ]; then
   echo "${0##*/} <file1> <*dir>... - archive files, folders..."
   exit 1
 fi
 
-# File existence test.
+# File(s) existence test
 for file in "$@"; do
   [ ! -e "$file" ] && echo "Non-exist: "$file"." && error=y
 done
 [ "$error" ] && exit 1
 
-# Archive name, extension, full filename, compression method.
-read -p "Archive name (ommiting ext.) [archive] : " archive_nm
+# Archive name prompt
+read -p "Archive name w/o ext. [archive] : " archive_nm
 if [ ! "$archive_nm" ]; then
   archive_nm=archive
 fi
 
-# Archive existence test.
+# Archive existence test
 if [ -f "$archive_nm".tar.xz ]; then
   echo "Exists: "$archive_nm".tar.xz"
   exit 1
 fi
 
-bsdtar -cJf "$archive_nm".tar.xz "$@" && \
+tar -cJf "$archive_nm".tar.xz "$@" && \
   echo "Created: "$archive_nm".tar.xz"
