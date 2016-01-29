@@ -1,0 +1,48 @@
+#!/usr/bin/bash
+# terminal emulator color output
+# info: http://blog.yjl.im/2013/02/terminal-256-colors-scripts.html
+# info: http://www.pixelbeat.org/docs/terminal_colours/
+# info: http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
+# info: https://en.wikipedia.org/wiki/File:Xterm_256color_chart.svg
+
+# ANSI 16
+echo
+for c in {0..7}; do
+  printf "\e[37;0;48;5;${c}m  $c \e[0m"
+done
+echo -e "  ANSI 16"
+for c in {8..9}; do
+  printf "\e[37;0;48;5;${c}m  $c \e[0m"
+done
+for c in {10..15}; do
+  printf "\e[37;0;48;5;${c}m $c \e[0m"
+done
+echo -e "\e[0m"
+
+# Color-cube 216 (6x6x6)
+echo
+for c in {16..21}; do
+  printf "\e[37;0;48;5;${c}m  $c \e[0m"
+done
+echo -e "    Color-cube 216 (6x6x6)"
+for c in {22..99}; do
+  printf "\e[37;0;48;5;${c}m  $c \e[0m"
+  [ $((++j%6)) -eq 0 ] && echo -e "\e[0m"
+done
+for c in {100..231}; do
+  printf "\e[37;0;48;5;${c}m $c \e[0m"
+  [ $((++j%6)) -eq 0 ] && echo -e "\e[0m"
+done
+
+# Grayscale
+echo
+for c in {232..237}; do
+  printf "\e[37;0;48;5;${c}m $c \e[0m"
+done
+echo -e "    Grayscale 24"
+for c in {238..255}; do
+  printf "\e[37;0;48;5;${c}m $c \e[0m"
+  [ $((++j%6)) -eq 0 ] && echo -e "\e[0m"
+done
+echo
+

@@ -1,7 +1,7 @@
 #!/usr/bin/bash
-# Archive files, folders...
+# Archive files
 
-# Usage display with help option or when parameter is not given
+# Usage display
 if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ]; then
   echo "${0##*/} <file1> <*dir>... - archive files, folders..."
   exit 1
@@ -14,16 +14,29 @@ done
 [ "$error" ] && exit 1
 
 # Archive name prompt
-read -p "Archive name w/o ext. [archive] : " archive_nm
-if [ ! "$archive_nm" ]; then
-  archive_nm=archive
+read -p "Archive name extension-less [archive]: " arc_nme
+if [ ! "$arc_nme" ]; then
+  arc_nme=archive
+fi
+
+# Archive type
+if ! hash xz 2>&-; then
+  arc_ext=.tar.gz
+else
+  arc_ext=.tar.xz
 fi
 
 # Archive existence test
-if [ -f "$archive_nm".tar.xz ]; then
-  echo "Exists: "$archive_nm".tar.xz"
+if [ -f "$arc_nme""$arc_ext" ]; then
+  echo "Existant: "$arc_nme""$arc_ext""
   exit 1
 fi
 
-tar -cJf "$archive_nm".tar.xz "$@" && \
-  echo "Created: "$archive_nm".tar.xz"
+# Archive creation
+if ! hash xz 2>&-; then
+  tar -czf "$arc_nme".tar.gz "$@" && \
+  echo "Archive created: "$arc_nme""$arc_ext""
+else
+  tar -cJf "$arc_nme".tar.xz "$@" && \
+  echo "Archive created: "$arc_nme""$arc_ext""
+fi
