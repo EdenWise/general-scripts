@@ -1,6 +1,5 @@
 #!/usr/bin/bash
-# terminal emulator color output
-# info: http://blog.yjl.im/2013/02/terminal-256-colors-scripts.html
+# terminal colors print
 # info: http://www.pixelbeat.org/docs/terminal_colours/
 # info: http://www.calmar.ws/vim/256-xterm-24bit-rgb-color-chart.html
 # info: https://en.wikipedia.org/wiki/File:Xterm_256color_chart.svg
