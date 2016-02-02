@@ -34,7 +34,7 @@ Sort directories by size.
 
 =item B<gurl>
 
-A curl general download wrapper.
+A general downloader, a wrapper for curl.
 
 =item B<largefiles>
 
