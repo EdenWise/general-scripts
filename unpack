@@ -1,36 +1,43 @@
 #!/usr/bin/bash
-# General archive extractor.
+# A wrapper script to extract multiple archive types.
 
-# Usage display if no parameters given
-if [[ -z "$@" ]]; then
-  echo "${0##*/} [archive] - general archive extractor"
-  exit
+# Usage
+if ! (( $# )); then
+  echo "${0##*/} [archive] — a wrapper script to extract multiple archive types"
+  exit 2
 fi
 
-# Test if file(s) exists
-for f in $@; do
-  if [ ! -f "$f" ]; then
-    echo "File non-exist: "$f"" && file_non=true
-  fi; done
-  [ "$file_non" = true ] && exit 1
+# Archive existence test
+for archive in $@; do
+  [ ! -f "$archive" ]  && echo "Archive non-existant: "$archive"" \
+    && file_non=true
+done
+[ "$file_non" = true ] && echo "Exiting" && exit 1
 
-# Extract file by using extension as reference to type
-for a in $@; do
-  case "$a" in
-    *.7z      ) bsdtar xvf  "$a"                ;;
-    *.bz2     ) bsdtar xvf  "$a"                ;;
-    *.tar.bz2 ) bsdtar xvf  "$a"                ;;
-    *.tbz2    ) bsdtar xvf  "$a"                ;;
-    *.deb     ) ar vx       "$a"                ;;
-    *.gz      ) bsdtar xvf  "$a"                ;;
-    *.tar.gz  ) bsdtar xvf  "$a"                ;;
-    *.tgz     ) bsdtar xvf "$a"                 ;;
-    *.tar     ) bsdtar xvf  "$a"                ;;
-    *.tar.xz  ) bsdtar xvf  "$a"                ;;
-    *.txz     ) bsdtar xvf  "$a"                ;;
-    *.rar     ) bsdtar xvf  "$a"                ;;
-    *.zip     ) bsdtar xvf  "$a"                ;;
-    *.Z       ) uncompress  "$a"                ;;
-    *         ) echo "Unsupported file format"  ;;
+# Extract
+for archive in $@; do
+  case "$archive" in
+    *.tar.bz2  )  tar xvf    "$archive"  ;;
+    *.tar.gz   )  tar xvf    "$archive"  ;;
+    *.tar.lz   )  tar xvf    "$archive"  ;;
+    *.tar.lzma )  tar xvf    "$archive"  ;;
+    *.tar.xz   )  tar xvf    "$archive"  ;;
+    *.tar.Z    )  tar xvf    "$archive"  ;;
+    *.tbz      )  tar xvf    "$archive"  ;;
+    *.tbz2     )  tar xvf    "$archive"  ;;
+    *.tb2      )  tar xvf    "$archive"  ;;
+    *.tgz      )  tar xvf    "$archive"  ;;
+    *.tlz      )  tar xvf    "$archive"  ;;
+    *.txz      )  tar xvf    "$archive"  ;;
+    *.7z       )  7z x       "$archive"  ;;
+    *.Z        )  uncompress "$archive"  ;;
+    *.bz2      )  bunzip2    "$archive"  ;;
+    *.exe      )  cabextract "$archive"  ;;
+    *.gz       )  gunzip     "$archive"  ;;
+    *.rar      )  unrar x    "$archive"  ;;
+    *.xz       )  unxz       "$archive"  ;;
+    *.zip      )  unzip      "$archive"  ;;
+    *          ) echo "Archive extension unknown: "$archive"" >&2 ;;
   esac
 done
+

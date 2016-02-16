@@ -7,6 +7,11 @@
 #   -A : user agent
 #   -C : resume download
 
+if ! (( $# )) || [ $1 = -h -o $1 = --help ]; then
+  echo "gurl — a general downloader, a wrapper for curl"
+  exit 2
+fi
+
 for download in "$@"; do
   if [ -e "${download##*/}" ]; then  # resume attempt
     curl -L -O -# -w "\n%{filename_effective}" -A "Mozilla/4.0" -C - "$download"
