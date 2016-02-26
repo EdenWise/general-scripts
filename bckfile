@@ -8,21 +8,21 @@ if [ $# -gt 2 -o $# -lt 1 -o "$1" = "-h" -o "$1" = "--help" ] ; then
 fi
 
 # File existent test
-if [ ! -e "$1" ]; then
+if [ ! -e "$1" ] ; then
   echo "Non-file: "$1""
   exit 1
 fi
 
 # Directory existent test
-if   [ ! "$2" ]; then
+if   [ ! "$2" ]  ; then
   srcdir=.
-elif [ -d "$2" ]; then
+elif [ -d "$2" ] ; then
   srcdir="$2"
 else
   echo "Non-dir.: "$2""
   exit 1
 fi
-srcdir=$(echo "$srcdir" | sed 's#/$##') # rm trailing slash
+srcdir=$(echo "$srcdir%/}")  # rm trailing slash
 
 # File: basename, noblename (minus ext. and num.), extension
 fbnm=${1##*/}
