@@ -14,27 +14,28 @@ if [ ! -e "$1" ] ; then
 fi
 
 # Directory existent test
-if   [ ! "$2" ]  ; then
+if   [  ! "$2" ] ; then
   srcdir=.
 elif [ -d "$2" ] ; then
   srcdir="$2"
+  srcdir="${srcdir%/}"
 else
   echo "Non-dir.: "$2""
   exit 1
 fi
-srcdir=$(echo "$srcdir%/}")  # rm trailing slash
 
-# File: basename, noblename (minus ext. and num.), extension
+# Filename parsing: basename, noblename, extension
 fbnm=${1##*/}
-fnbl=${fbnm%.*} ; fnbl=${fnbl%_[0-9][0-9]*}
-fext=${fbnm##*.}
-if [ "$fext" = "$fbnm" ]; then
+if [[ "$fbnm" = .* ]] ; then                       # config file just del seqnum
+  fnbl="${fbnm%_[0-9][0-9]*}"
   fext=""
 else
-  fext=".$fext"
+  fnbl="${fbnm%.*}" ; fnbl="${fnbl%_[0-9][0-9]*}"
+  fext=."${fbnm##*.}"
+  [[ "$fext" = ."$fbnm" ]] && fext=""
 fi
 
-# File number determine from previous file
+# File sequential number determine
 shopt -s nullglob
 pnms=("$srcdir"/"$fnbl"_[0-9][0-9]*)
 if [ "$pnms" ]; then
