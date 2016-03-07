@@ -35,12 +35,12 @@ else
   [[ "$fext" = ."$fbnm" ]] && fext=""
 fi
 
-# Sequential number determine from previous
+# Sequential number set or calculate from previous file
 pnms=("$srcdir"/"$fnbl"_[0-9][0-9]*)
-if ! [ "$pnms" ]; then
+if [ ! -f "$pnms" ]; then
   fnum=00
 else
-  # Previous file: name, basename, extension-less, number
+  # Previous file: name, basename, bnm w/o ext., number; sequential number
   shopt -s nullglob
   pnme="${pnms[-1]}"
   pbnm="${pnme##*/}"
