@@ -1,28 +1,20 @@
 #!/usr/bin/bash
-# File backup with sequential numbering
+# Backup a file with sequential numbering
 
 # Usage
 if [ $# -gt 2 -o $# -lt 1 -o "$1" = "-h" -o "$1" = "--help" ] ; then
-  echo "${0##*/} <file> <*dir> — file backup with sequential numbering"
+  echo "${0##*/} <file> <*dir> — backup a file with sequential numbering"
   exit 1
 fi
 
-# File existent test
-if [ ! -e "$1" ] ; then
-  echo "Non-file: "$1""
-  exit 1
-fi
+# Existence tests for file and directory
+[ ! -e "$1" ]             && echo "non-existent: "$1"" && non_exist=y
+[ "$2" ] && [ ! -d "$2" ] && echo "non-existent: "$2"" && non_exist=y
+[ "$non_exist" ] && exit 1
 
-# Directory existent test
-if   [  ! "$2" ] ; then
-  srcdir=.
-elif [ -d "$2" ] ; then
-  srcdir="$2"
-  srcdir="${srcdir%/}"
-else
-  echo "Non-dir.: "$2""
-  exit 1
-fi
+# Source directory define and without trailing slash
+[  ! "$2" ] && srcdir=.
+srcdir="${srcdir%/}"
 
 # Filename parsing: basename, noblename, extension
 fbnm=${1##*/}
@@ -37,7 +29,7 @@ fi
 
 # Sequential number set or calculate from previous file
 pnms=("$srcdir"/"$fnbl"_[0-9][0-9]*)
-if [ ! -f "$pnms" ]; then
+if [ ! -e "$pnms" ]; then
   fnum=00
 else
   # Previous file: name, basename, bnm w/o ext., number; sequential number
