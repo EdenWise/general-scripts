@@ -1,42 +1,28 @@
 #!/usr/bin/bash
-# Archive files
+# Archive files - a basic wrapper script to simplify the task.
 
-# Usage display
-if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ]; then
+# help
+if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ] ; then
   echo "${0##*/} <file1> <*dir>... - archive files, folders..."
-  exit 1
+  exit 2
 fi
 
-# File(s) existence test
-for file in "$@"; do
-  [ ! -e "$file" ] && echo "Non-exist: "$file"." && error=y
+# file existence test
+for file in "$@" ; do
+  [ ! -e "$file" ] && echo "file non-existent: "$file"." && error=y
 done
 [ "$error" ] && exit 1
 
-# Archive name prompt
-read -p "Archive name extension-less [archive]: " arc_nme
-if [ ! "$arc_nme" ]; then
-  arc_nme=archive
-fi
+# archive name
+read -p "Name archive with extension [archive.tar.gz]: " archive_name 
+[ ! "$archive_name" ] && archive_name=archive.tar.gz
 
-# Archive type
-if ! hash xz 2>&-; then
-  arc_ext=.tar.gz
-else
-  arc_ext=.tar.xz
-fi
-
-# Archive existence test
-if [ -f "$arc_nme""$arc_ext" ]; then
-  echo "Existant: "$arc_nme""$arc_ext""
+# archive existence test
+if [ -f "$archive_name" ] ; then
+  echo "archive existent: "$archive_name""
   exit 1
 fi
 
-# Archive creation
-if ! hash xz 2>&-; then
-  tar -czf "$arc_nme".tar.gz "$@" && \
-  echo "Archive created: "$arc_nme""$arc_ext""
-else
-  tar -cJf "$arc_nme".tar.xz "$@" && \
-  echo "Archive created: "$arc_nme""$arc_ext""
-fi
+# archive creation
+tar --create --auto-compress --file "$archive_name" "$@" && \
+  [ -f "$archive_name" ] && echo "archive created: "$archive_name""
