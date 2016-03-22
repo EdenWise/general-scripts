@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Archive files - a basic wrapper script to simplify the task.
+# A tar wrapper scipt to simplify archiving files.
 
 # help
 if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ] ; then
@@ -9,20 +9,27 @@ fi
 
 # file existence test
 for file in "$@" ; do
-  [ ! -e "$file" ] && echo "file non-existent: "$file"." && error=y
+  [ ! -e "$file" ] && echo "file non-existent: "$file"" && error=y
 done
 [ "$error" ] && exit 1
 
 # archive name
-read -p "Name archive with extension [archive.tar.gz]: " archive_name 
-[ ! "$archive_name" ] && archive_name=archive.tar.gz
+read -p "archive name [archive.tar.gz]: " arc_nme 
+[ ! "$arc_nme" ] && arc_nme=archive.tar.gz
 
-# archive existence test
-if [ -f "$archive_name" ] ; then
-  echo "archive existent: "$archive_name""
-  exit 1
-fi
+# archive overwrite prompt
+[ -f "$arc_nme" ] && while : ; do
+  read -p "archive exists, overwrite? (y/n): " arc_ovr
+  shopt -s extglob
+  if   [[ "$arc_ovr" = [yY]?(e)?(s) ]] ; then
+    opt_ovr=--overwrite
+    break
+  elif [[ "$arc_ovr" = [nN]?(o)     ]] ; then
+    exit 2
+  fi
+done
 
 # archive creation
-tar --create --auto-compress --file "$archive_name" "$@" && \
-  [ -f "$archive_name" ] && echo "archive created: "$archive_name""
+tar --create --auto-compress --file "$arc_nme" "$@" $(printf '%s' "$opt_ovr") \
+ && [ -f "$arc_nme" ] && echo "archive created: "$arc_nme""
+
