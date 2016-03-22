@@ -14,7 +14,7 @@ done
 [ "$error" ] && exit 1
 
 # archive name
-read -p "archive name [archive.tar.gz]: " arc_nme 
+read -e -p "archive name [archive.tar.gz]: " arc_nme 
 [ ! "$arc_nme" ] && arc_nme=archive.tar.gz
 
 # archive overwrite prompt
