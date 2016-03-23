@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# A tar wrapper scipt to simplify archiving files.
+# A tar wrapper script to simplify archiving files.
 
 # help
 if [ $# -eq 0 -o "$1" = -h -o "$1" = --help ] ; then
