@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-# Open a command in the terminal in the background.
-# Add 'complete -cf bgcmd' to ~/.bashrc for command completion
+# Open a command in the background (generally for windowed applications)
+# Add `complete -cf bgcmd` to the shell configuration for tab completion.
 
 nohup "$@" &> /dev/null &
