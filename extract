@@ -11,29 +11,26 @@ fi
 [ ! -f "$archive" ]  && echo "archive non-existant: "$archive"" && exit 1
 
 # Extract
-for archive in $@; do
-  case "$archive" in
-    *.tar.bz2  )  tar xvf    "$archive"  ;;
-    *.tar.gz   )  tar xvf    "$archive"  ;;
-    *.tar.lz   )  tar xvf    "$archive"  ;;
-    *.tar.lzma )  tar xvf    "$archive"  ;;
-    *.tar.xz   )  tar xvf    "$archive"  ;;
-    *.tar.Z    )  tar xvf    "$archive"  ;;
-    *.tbz      )  tar xvf    "$archive"  ;;
-    *.tbz2     )  tar xvf    "$archive"  ;;
-    *.tb2      )  tar xvf    "$archive"  ;;
-    *.tgz      )  tar xvf    "$archive"  ;;
-    *.tlz      )  tar xvf    "$archive"  ;;
-    *.txz      )  tar xvf    "$archive"  ;;
-    *.7z       )  7z x       "$archive"  ;;
-    *.Z        )  uncompress "$archive"  ;;
-    *.bz2      )  bunzip2    "$archive"  ;;
-    *.exe      )  cabextract "$archive"  ;;
-    *.gz       )  gunzip     "$archive"  ;;
-    *.rar      )  unrar x    "$archive"  ;;
-    *.xz       )  unxz       "$archive"  ;;
-    *.zip      )  unzip      "$archive"  ;;
-    *          ) echo "Archive extension unknown: "$archive"" >&2 ;;
-  esac
-done
-
+case "$archive" in
+  *.tar.bz2  )  tar xvf    "$archive"  ;;
+  *.tar.gz   )  tar xvf    "$archive"  ;;
+  *.tar.lz   )  tar xvf    "$archive"  ;;
+  *.tar.lzma )  tar xvf    "$archive"  ;;
+  *.tar.xz   )  tar xvf    "$archive"  ;;
+  *.tar.Z    )  tar xvf    "$archive"  ;;
+  *.tbz      )  tar xvf    "$archive"  ;;
+  *.tbz2     )  tar xvf    "$archive"  ;;
+  *.tb2      )  tar xvf    "$archive"  ;;
+  *.tgz      )  tar xvf    "$archive"  ;;
+  *.tlz      )  tar xvf    "$archive"  ;;
+  *.txz      )  tar xvf    "$archive"  ;;
+  *.7z       )  7z x       "$archive"  ;;
+  *.Z        )  uncompress "$archive"  ;;
+  *.bz2      )  bunzip2    "$archive"  ;;
+  *.exe      )  cabextract "$archive"  ;;
+  *.gz       )  gunzip     "$archive"  ;;
+  *.rar      )  unrar x    "$archive"  ;;
+  *.xz       )  unxz       "$archive"  ;;
+  *.zip      )  unzip      "$archive"  ;;
+  *          ) echo "Archive extension unknown: "$archive"" >&2 ;;
+esac
