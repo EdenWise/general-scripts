@@ -1,9 +1,9 @@
 #!/usr/bin/bash
 # A wrapper script to extract multiple archive types.
 
-# Usage
-if ! (( $# )); then
-  echo "${0##*/} [archive] — a wrapper script to extract multiple archive types"
+# help
+if [ $# -ne 1 ] || [ $1 = "-h" -o $1 = "--help" ] ; then
+  echo "${0##*/} <archive.file> — a wrapper script to extract multiple archive types"
   exit 2
 fi
 
