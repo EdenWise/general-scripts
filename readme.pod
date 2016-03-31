@@ -24,6 +24,10 @@ Copy file or stdin into X.org server clipboard.
 
 Paste X.org server clipboard to file or stdout.
 
+=item B<compress>
+
+A tar wrapper script to simplify archiving files.
+
 =item B<devtop>
 
 Print disk usage.
@@ -31,6 +35,10 @@ Print disk usage.
 =item B<dirsize>
 
 Sort directories by size.
+
+=item B<extract>
+
+A wrapper script to extract multiple archive types.
 
 =item B<gurl>
 
@@ -47,10 +55,6 @@ A no-think linker.
 =item B<memtop>
 
 Print top memory users.
-
-=item B<pack>
-
-Archive files, folders...
 
 =item B<pwr>
 
@@ -83,10 +87,6 @@ Trash files rather than remove/delete them (alternate to rm).
 =item B<turl>
 
 Command line tinyurl.
-
-=item B<unpack>
-
-General archive extractor.
 
 =item B<wordsort>
 
