@@ -7,12 +7,8 @@ if [ $# -ne 1 ] || [ $1 = "-h" -o $1 = "--help" ] ; then
   exit 2
 fi
 
-# Archive existence test
-for archive in $@; do
-  [ ! -f "$archive" ]  && echo "Archive non-existant: "$archive"" \
-    && file_non=true
-done
-[ "$file_non" = true ] && echo "Exiting" && exit 1
+# archive existence test
+[ ! -f "$archive" ]  && echo "archive non-existant: "$archive"" && exit 1
 
 # Extract
 for archive in $@; do
