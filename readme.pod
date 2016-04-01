@@ -38,7 +38,7 @@ Sort directories by size.
 
 =item B<extract>
 
-A wrapper script to extract multiple archive types.
+A wrapper script to extract numerous types of archives.
 
 =item B<gurl>
 
