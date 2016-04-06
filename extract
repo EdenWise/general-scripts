@@ -1,11 +1,15 @@
 #!/usr/bin/bash
 # A wrapper script to extract numerous types of archives.
 
-# help
-if [ $# -eq 0 -o "$1" = "-h" -o "$1" = "--help" ] ; then
+# options and help
+usage () {
   echo "${0##*/} <archive1>... — a wrapper script to extract numerous types of archives"
   exit 2
-fi
+}
+
+[[ "$*" = -h* ]]     || [[ "$*" = *\ -h\ * ]]     || [[ "$*" = *\ -h ]] || \
+[[ "$*" = --help* ]] || [[ "$*" = *\ --help\ * ]] || [[ "$*" = *\ --help ]] && \
+  usage
 
 # archive existence test
 for archive in "$@" ; do
