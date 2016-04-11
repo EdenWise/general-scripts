@@ -17,6 +17,26 @@ done
 read -e -p "archive name [archive.tar.gz]: " arc_nme 
 [ ! "$arc_nme" ] && arc_nme=archive.tar.gz
 
+# program existence test
+shopt -s extglob
+case "$arc_nme" in
+  *.@(tar.bz2|tb@(2|z|z2)) )  p=bzip2      ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.gz|tgz)          )  p=gzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.tar.lz                 )  p=lzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.lzma|tlz)        )  p=xz         ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.xz|txz)          )  p=xz         ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.Z|t?(a)z)        )  p=gzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.tar                    )  p=tar        ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *                        )  { echo ext unknown: "$archive" ; arc_prrq=y ; } ;;
+esac ; [ "$arc_prrq" ] && exit 1
+
 # archive overwrite prompt
 [ -f "$arc_nme" ] && while : ; do
   read -p "archive exists, overwrite? (y/n): " arc_ovr
