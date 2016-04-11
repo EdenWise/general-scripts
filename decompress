@@ -1,56 +1,89 @@
 #!/usr/bin/bash
-# A wrapper script to extract numerous types of archives.
+# A wrapper script to decompress various archive types.
 
-# options and help
-usage () {
-  echo "${0##*/} <archive1>... — a wrapper script to extract numerous types of archives"
+# option: help
+if (( ! $# )) \
+|| [[ "$*" =~ (^| )-h( |$) ]] || [[ "$*" =~ (^| )--help( |$) ]] \
+|| [[ "$*" =  -l           ]] || [[ "$*" =  --list           ]] ; then
+  printf "${0##*/} [*-l] <file>... — wrapper script to decompress various "
+  echo   "archive types"
+  echo "  -l, --list  - list archive contents"
   exit 2
-}
+fi 
 
-[[ "$*" = -h* ]]     || [[ "$*" = *\ -h\ * ]]     || [[ "$*" = *\ -h ]] || \
-[[ "$*" = --help* ]] || [[ "$*" = *\ --help\ * ]] || [[ "$*" = *\ --help ]] && \
-  usage
+# option: list
+[[ "$*" =~ (^| )-l( |$) ]] || [[ "$*" =~ (^| )--list( |$) ]] && list=yes
 
 # archive existence test
 for archive in "$@" ; do
-  [ ! -f "$archive" ]  && echo "archive non-existent: "$archive"" && arc_noex=y
-done
-[ "$arc_noex" ] && exit 1
+  [ "$archive" = -l -o "$archive" = --list ] && continue
+  [ ! -f "$archive" ] && { echo archive non-existent: "$archive" ;arc_noex=yes;}
+done ; [ "$arc_noex" ] && exit 1
 
 # program existence test
+shopt -s extglob
 for archive in "$@" ; do
+[ "$archive" = -l -o "$archive" = --list ] && continue
 case "$archive" in
-  *.tar.bz2  | *.tbz | *.tbz2 | *.tb2 )
-    hash bunzip2    2>&- || echo "program required: bunzip2"    && arc_prrq=y ;;
-  *.tar.gz   | *.tgz )
-    hash gunzip     2>&- || echo "program required: gunzip"     && arc_prrq=y ;;
-  *.tar.lzma | *.tar.lz | *.tlz )
-    hash lzma       2>&- || echo "program required: lzma"       && arc_prrq=y ;;
-  *.tar.xz   | *.txz )
-    hash xz         2>&- || echo "program required: xz"         && arc_prrq=y ;;
-  *.tar.Z    | *.taz | *.tz )
-    hash uncompress 2>&- || echo "program required: uncompress" && arc_prrq=y ;;
-  *.7z       )
-    hash 7z         2>&- || echo "program required: 7z"         && arc_prrq=y ;;
-  *.bz2      )
-    hash bunzip2    2>&- || echo "program required: bunzip2"    && arc_prrq=y ;;
-  *.exe      )
-    hash cabextract 2>&- || echo "program required: cabextract" && arc_prrq=y ;;
-  *.gz       )
-    hash gunzip     2>&- || echo "program required: gunzip"     && arc_prrq=y ;;
-  *.rar      )
-    hash unrar      2>&- || echo "program required: unrar"      && arc_prrq=y ;;
-  *.xz       )
-    hash xz         2>&- || echo "program required: xz"         && arc_prrq=y ;;
-  *.Z        )
-    hash uncompress 2>&- || echo "program required: uncompress" && arc_prrq=y ;;
-  *.zip      )
-    hash unzip      2>&- || echo "program required: unzip"      && arc_prrq=y ;;
-  *          )
-                            echo "extension unknown: "$archive"" &&arc_prrq=y ;;
+  *.tar                    )  p=tar        ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.bz2|tb@(2|z|z2)) )  p=bzip2      ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.gz|tgz)          )  p=gzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.tar.lz                 )  p=lzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.lzma|tlz)        )  p=xz         ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.xz|txz)          )  p=xz         ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.@(tar.Z|t?(a)z)        )  p=gzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.7z                     )  p=7zr        ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.bz2                    )  p=bunzip2    ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.exe                    )  p=cabextract ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.gz                     )  p=gunzip     ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.lz                     )  p=lzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.rar                    )  p=unrar      ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.xz                     )  p=xz         ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.Z                      )  p=gzip       ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *.zip                    )  p=unzip      ; hash $p 2>&- \
+                              || { echo program required: $p ; arc_prrq=y ; } ;;
+  *                        )  { echo ext unknown: "$archive" ; arc_prrq=y ; } ;;
 esac
-done
-[ "$arc_prrq" ] && exit 1
+done ; [ "$arc_prrq" ] && exit 1
+
+# list
+[ "$list" ] && for archive in "$@" ; do
+[ "$archive" = -l -o "$archive" = --list ] && continue
+echo -- "$archive" --
+case "$archive" in
+  *.tar                    )  tar tvf           "$archive"      ;;  
+  *.@(tar.bz2|tb@(2|z|z2)) )  tar tvf           "$archive"      ;;  
+  *.@(tar.gz|tgz)          )  tar tvf           "$archive"      ;;  
+  *.tar.lz                 )  tar tvf           "$archive"      ;;  
+  *.@(tar.lzma|tlz)        )  tar tvf           "$archive"      ;;  
+  *.@(tar.xz|txz)          )  tar tvf           "$archive"      ;;  
+  *.@(tar.Z|t?(a)z)        )  tar tvf           "$archive"      ;;  
+  *.7z                     )  7zr l             "$archive"      ;;  
+  *.bz2                    )  echo              "${archive%.*}" ;;  
+  *.exe                    )  cabextract --list "$archive"      ;;  
+  *.gz                     )  echo              "${archive%.*}" ;;  
+  *.lz                     )  echo              "${archive%.*}" ;;  
+  *.rar                    )  unrar l           "$archive"      ;;  
+  *.xz                     )  echo              "${archive%.*}" ;;    
+  *.Z                      )  gzip --list       "$archive"      ;;  
+  *.zip                    )  unzip -l          "$archive"      ;;  
+esac
+done ; [ "$list" ] && exit
 
 # extract
 for archive in "$@" ; do
@@ -60,7 +93,7 @@ case "$archive" in
   *.tar.lzma | *.tar.lz | *.tlz          )  tar xf     "$archive"  ;;
   *.tar.xz   | *.txz                     )  tar xf     "$archive"  ;;
   *.tar.Z    | *.taz    | *.tz           )  tar xf     "$archive"  ;;
-  *.7z                                   )  7z  x      "$archive"  ;;
+  *.7z                                   )  7zr x      "$archive"  ;;
   *.bz2                                  )  bunzip2    "$archive"  ;;
   *.exe                                  )  cabextract "$archive"  ;;
   *.gz                                   )  gunzip     "$archive"  ;;
@@ -70,3 +103,4 @@ case "$archive" in
   *.zip                                  )  unzip      "$archive"  ;;
 esac
 done
+
