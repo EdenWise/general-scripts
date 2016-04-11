@@ -28,6 +28,10 @@ Paste X.org server clipboard to file or stdout.
 
 A tar wrapper script to simplify archiving files.
 
+=item B<decompress>
+
+A wrapper script to decompress various types of archives.
+
 =item B<devtop>
 
 Print disk usage.
@@ -35,10 +39,6 @@ Print disk usage.
 =item B<dirsize>
 
 Sort directories by size.
-
-=item B<extract>
-
-A wrapper script to extract numerous types of archives.
 
 =item B<gurl>
 
@@ -87,6 +87,10 @@ Trash files rather than remove/delete them (alternate to rm).
 =item B<turl>
 
 Command line tinyurl.
+
+=item B<vs>
+
+(v)im (s)cratchpad — create a scratchpad/temporary file.
 
 =item B<wordsort>
 
