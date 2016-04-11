@@ -1,24 +1,20 @@
 #!/usr/bin/bash
-# (v)im (t)emporary file — create temporary scratchpad
+# (v)im (s)cratchpad — create a scratchpad/temporary file
 
-tmp_dir=~/.local/share/Trash/files
 tme_day=$(date +%m%d%H%M)
+tmp_dir=~/.local/share/Trash/files/ ; [ -d "$tmp_dir" ] || tmp_dir=/tmp
 
-[ ! -d "$tmp_dir" ] && mkdir -pv "$tmp_dir"
+# program existence test
+hash vim 2>&- || { echo program required: vim ; exit 1 ; }
 
-# existence test for program
-hash vim 2>&- || { echo "Program required: vim." ; exit 1 ; }
-
-# usage
-if [ "$1" = -h -o "$1" = --help ]; then
-  echo "${0##*/} [name1] [name2*] — create a temporary scratchpad"
+# help
+if [[ "$*" =~ (^| )-h( |$) ]] || [[ "$*" =~ (^| )--help( |$) ]] ; then
+  echo "${0##*/} <name1*> — create a scratchpad/temporary file"
   exit 2
 fi
 
 if [ "$1" ]; then
-  for name in "$@"; do
-    vim "$tmp_dir"/"$tme_day"-"$name"
-  done
+  vim "$tmp_dir"/"$tme_day"-"$name"
 else
   vim "$tmp_dir"/"$tme_day"
 fi
