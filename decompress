@@ -59,7 +59,7 @@ case "$archive" in
   *.@(tar.lzma|tlz)        )  tar tvf           "$archive"      ;;  
   *.@(tar.xz|txz)          )  tar tvf           "$archive"      ;;  
   *.@(tar.Z|t?(a)z)        )  tar tvf           "$archive"      ;;  
-  *.7z                     )  7zr l             "$archive"      ;;  
+  *.7z                     )  7zr l -bd         "$archive"      ;;  
   *.bz2                    )  echo              "${archive%.*}" ;;  
   *.exe                    )  cabextract --list "$archive"      ;;  
   *.gz                     )  echo              "${archive%.*}" ;;  
