@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # A wrapper script to decompress various archive types.
 
-# option: help
+# options: help and list
 if (( ! $# )) \
 || [[ "$*" =~ (^| )-h( |$) ]] || [[ "$*" =~ (^| )--help( |$) ]] \
 || [[ "$*" =  -l           ]] || [[ "$*" =  --list           ]] ; then
@@ -9,10 +9,9 @@ if (( ! $# )) \
   echo   "archive types"
   echo   "  -l, --list  - list archive contents"
   exit 2
+elif [[ "$*" =~ (^| )-l( |$) ]] || [[ "$*" =~ (^| )--list( |$) ]] ; then
+  list=yes
 fi 
-
-# option: list
-[[ "$*" =~ (^| )-l( |$) ]] || [[ "$*" =~ (^| )--list( |$) ]] && list=yes
 
 # archive existence test
 for archive in "$@" ; do
@@ -95,15 +94,17 @@ case "$archive" in
   *.@(tar.lzma|tlz)        )  tar xf            "$archive"      ;;  
   *.@(tar.xz|txz)          )  tar xf            "$archive"      ;;  
   *.@(tar.Z|t?(a)z)        )  tar xf            "$archive"      ;;  
-  *.7z                     )  7zr x -bd         "$archive"      ;;  
+  *.7z                     )  7zr x    -bd      "$archive"      ;;  
   *.bz2                    )  bunzip2 --keep    "$archive"      ;;  
   *.exe                    )  cabextract        "$archive"      ;;  
   *.gz                     )  gunzip  --keep    "$archive"      ;;
-  *.lz                     )  lzip    --keep    "$archive"      ;;
-  *.rar                    )  unrar x           "$archive"      ;;  
+  *.lz                     )  lzip    --keep -d "$archive"      ;;
+  *.rar                    )  unrar     x       "$archive"      ;;  
   *.xz                     )  unxz    --keep    "$archive"      ;;
   *.Z                      )  gunzip  --keep    "$archive"      ;;  
-  *.zip                    )  unzip   -q        "$archive"      ;;  
+  *.zip                    )  unzip    -q       "$archive"      ;;  
 esac
 done
 
+# program required: function for test and error message (clean-up)
+# extract:          error message
