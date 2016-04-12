@@ -67,7 +67,7 @@ case "$archive" in
   *.rar                    )  unrar l           "$archive"      ;;  
   *.xz                     )  echo              "${archive%.*}" ;;    
   *.Z                      )  gzip --list       "$archive"      ;;  
-  *.zip                    )  unzip -l          "$archive"      ;;  
+  *.zip                    )  unzip -l -qq      "$archive"      ;;  
 esac
 done ; [ "$list" ] && exit
 
