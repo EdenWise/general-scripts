@@ -73,7 +73,7 @@ done ; [ "$list" ] && exit
 
 # decompress
 prn      () { printf "$archive"..." " ; }
-run_test () { [ $? = 0 ] && echo success || echo ; }
+run_test () { [ $? = 0 ] && echo success ; }
 
 for archive in "$@" ; do
 case "$archive" in
