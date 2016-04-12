@@ -49,7 +49,7 @@ done ; [ "$arc_prrq" ] && exit 1
 # list
 [ "$list" ] && \
 for archive in "$@" ; do
-[[ "$archive" =~ (-l|--list) ]] && continue
+[ "$archive" = -l ] || [ "$archive" = --list ] && continue
 echo -e "\e[1m "$archive" \e[0m"
 case "$archive" in
   *.tar                    )  tar tvf           "$archive"      ;;  
