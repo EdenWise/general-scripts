@@ -84,7 +84,7 @@ case "$archive" in
   *.@(tar.lzma|tlz)        )  prn ; tar xf            "$archive" ; run_test ;;
   *.@(tar.xz|txz)          )  prn ; tar xf            "$archive" ; run_test ;;
   *.@(tar.Z|t?(a)z)        )  prn ; tar xf            "$archive" ; run_test ;;
-  *.7z                     )  prn ; 7zr x    -bd      "$archive" 2>&1 /dev/null
+  *.7z                     )  prn ; 7zr x             "$archive" > /dev/null
                               run_test ;;
   *.bz2                    )  prn ; bunzip2 --keep    "$archive" ; run_test ;;
   *.exe                    )  prn ; cabextract        "$archive" ; run_test ;;
