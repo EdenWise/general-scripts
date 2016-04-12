@@ -49,9 +49,9 @@ done ; [ "$arc_prrq" ] && exit 1
 # list
 [ "$list" ] && \
 for archive in "$@" ; do
+[[ "$archive" =~ (-l|--list) ]] && continue
 echo -e "\e[1m "$archive" \e[0m"
 case "$archive" in
-  -l | --list              )  continue                          ;;
   *.tar                    )  tar tvf           "$archive"      ;;  
   *.@(tar.bz2|tb@(2|z|z2)) )  tar tvf           "$archive"      ;;  
   *.@(tar.gz|tgz)          )  tar tvf           "$archive"      ;;  
