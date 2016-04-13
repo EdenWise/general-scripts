@@ -72,27 +72,25 @@ esac
 done ; [ "$list" ] && exit
 
 # decompress
-prn      () { printf "$archive"..." " ; }
-run_test () { [ $? = 0 ] && echo success ; }
+arc () { echo "$archive"..." " ; }
 
 for archive in "$@" ; do
 case "$archive" in
-  *.tar                    )  prn ; tar xf            "$archive" ; run_test ;;
-  *.@(tar.bz2|tb@(2|z|z2)) )  prn ; tar xf            "$archive" ; run_test ;;
-  *.@(tar.gz|tgz)          )  prn ; tar xf            "$archive" ; run_test ;;
-  *.tar.lz                 )  prn ; tar xf            "$archive" ; run_test ;;
-  *.@(tar.lzma|tlz)        )  prn ; tar xf            "$archive" ; run_test ;;
-  *.@(tar.xz|txz)          )  prn ; tar xf            "$archive" ; run_test ;;
-  *.@(tar.Z|t?(a)z)        )  prn ; tar xf            "$archive" ; run_test ;;
-  *.7z                     )  prn ; 7zr x             "$archive" > /dev/null
-                              run_test ;;
-  *.bz2                    )  prn ; bunzip2 --keep    "$archive" ; run_test ;;
-  *.exe                    )  prn ; cabextract        "$archive" ; run_test ;;
-  *.gz                     )  prn ; gunzip  --keep    "$archive" ; run_test ;;
-  *.lz                     )  prn ; lzip    --keep -d "$archive" ; run_test ;;
-  *.rar                    )  prn ; unrar     x       "$archive" ; run_test ;;
-  *.xz                     )  prn ; unxz    --keep    "$archive" ; run_test ;;
-  *.Z                      )  prn ; gunzip  --keep    "$archive" ; run_test ;;
-  *.zip                    )  prn ; unzip    -q       "$archive" ; run_test ;;
+  *.tar                    )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.@(tar.bz2|tb@(2|z|z2)) )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.@(tar.gz|tgz)          )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.tar.lz                 )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.@(tar.lzma|tlz)        )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.@(tar.xz|txz)          )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.@(tar.Z|t?(a)z)        )  arc ; tar    -xf    "$archive" 2>&1 > /dev/null ;;
+  *.7z                     )  arc ; 7zr      x    "$archive" 2>&1 > /dev/null ;;
+  *.bz2                    )  arc ; bunzip2 -k    "$archive" 2>&1 > /dev/null ;;
+  *.exe                    )  arc ; cabextract    "$archive" 2>&1 > /dev/null ;;
+  *.gz                     )  arc ; gunzip  -k    "$archive" 2>&1 > /dev/null ;;
+  *.lz                     )  arc ; lzip    -k -d "$archive" 2>&1 > /dev/null ;;
+  *.rar                    )  arc ; unrar    x    "$archive" 2>&1 > /dev/null ;;
+  *.xz                     )  arc ; unxz    -k    "$archive" 2>&1 > /dev/null ;;
+  *.Z                      )  arc ; gunzip  -k    "$archive" 2>&1 > /dev/null ;;
+  *.zip                    )  arc ; unzip   -q    "$archive" 2>&1 > /dev/null ;;
 esac
 done
