@@ -14,7 +14,7 @@ if [[ "$*" =~ (^| )-h( |$) ]] || [[ "$*" =~ (^| )--help( |$) ]] ; then
 fi
 
 if [ "$1" ]; then
-  vim "$tmp_dir"/"$tme_day"-"$name"
+  vim "$tmp_dir"/"$tme_day"-"$1"
 else
   vim "$tmp_dir"/"$tme_day"
 fi
