@@ -1,26 +1,25 @@
 #!/usr/bin/bash
 # A wrapper script to decompress various archive types.
+shopt -s extglob
 
 # options: help and list
 if (( ! $# )) \
-|| [[ "$*" =~ (^| )-h( |$) ]] || [[ "$*" =~ (^| )--help( |$) ]] \
-|| [[ "$*" =  -l           ]] || [[ "$*" =  --list           ]] ; then
+|| [[ "$*" =~ (^| )(-h|--help)( |$) ]] || [[ "$*" = @(-l|--list) ]] ; then
   printf "${0##*/} [*-l] <file>... — wrapper script to decompress various "
   echo   "archive types"
   echo   "  -l, --list  - list archive contents"
   exit 2
-elif [[ "$*" =~ (^| )-l( |$) ]] || [[ "$*" =~ (^| )--list( |$) ]] ; then
+elif [[ "$*" =~ (^| )(-l|--list)( |$) ]] ; then
   list=y
 fi 
 
 # archive existence test
 for archive in "$@" ; do
-  [ "$archive" = -l -o "$archive" = --list ] && continue
+  [[ "$archive" = @(-l|--list) ]] && continue
   [ ! -f "$archive" ] && { echo archive non-existent: "$archive" ;arc_noex=yes;}
 done ; [ "$arc_noex" ] && exit 1
 
 # program existence test
-shopt -s extglob
 prg_test () { hash $prg 2>&- || { echo program required: $prg ; arc_prrq=y ; };}
 
 for archive in "$@" ; do
@@ -49,7 +48,7 @@ done ; [ "$arc_prrq" ] && exit 1
 # list
 [ "$list" ] && \
 for archive in "$@" ; do
-[ "$archive" = -l ] || [ "$archive" = --list ] && continue
+[[ "$archive" = @(-l|--list) ]] && continue
 echo -e "\e[1m "$archive" \e[0m"
 case "$archive" in
   *.tar                    )  tar tvf           "$archive"      ;;  
